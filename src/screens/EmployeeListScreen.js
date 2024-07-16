@@ -1,8 +1,8 @@
 // screens/EmployeeListScreen.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEmployees } from '../redux/reducers/employeeSlice';
+import { fetchEmployees, deleteEmployee } from '../redux/reducers/employeeSlice';
 
 const EmployeeListScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -36,14 +36,18 @@ const EmployeeListScreen = ({ navigation }) => {
     }
   };
 
+  const handleDelete = (id) => {
+    dispatch(deleteEmployee(id));
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('EmployeeDetail', { employee: item })}
-    >
-      <View style={styles.itemContainer}>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('EmployeeDetail', { employee: item })}>
         <Text>{item.employee_name}</Text>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <Button title="Edit" onPress={() => navigation.navigate('EmployeeForm', { employee: item })} />
+      <Button title="Delete" onPress={() => handleDelete(item.id)} />
+    </View>
   );
 
   return (
@@ -54,6 +58,7 @@ const EmployeeListScreen = ({ navigation }) => {
         value={searchQuery}
         onChangeText={handleSearch}
       />
+      <Button title="Add Employee" onPress={() => navigation.navigate('EmployeeForm')} />
       <FlatList
         data={filteredEmployees}
         renderItem={renderItem}
@@ -79,6 +84,9 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

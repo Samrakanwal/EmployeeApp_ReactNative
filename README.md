@@ -69,5 +69,20 @@ Wrap the app.js with the Redux provider
 ### Create the component 
 This component fetches posts and displays them using FlatList:
 
+### CRUD operations
+To add the remaining CRUD operations (Create, Update, Delete) in this  React Native app, I 'll need to create new API endpoints and corresponding functions. Here’s it is :
+
+Set up Redux slices and thunks for Create, Update, and Delete operations.
+Integrate these actions into my React Native components.
+
+
+###  Integrate CRUD Actions in Components
+Create a Form Component for Adding and Editing Employees
+Update EmployeeListScreen.js to include navigation to the form and delete functionality
+
+
 ## Conclusion
 This setup integrates Redux for state management in a React Native app with a Tab View that fetches and displays employee data from the provided API.  https://dummy.restapiexample.com/ The app allows searching and filtering through the employee list and displays details of a selected employee. This setup includes best practices like caching using AsyncStorage and optimizing for performance.
+
+
+This implementation completes the CRUD operations by adding the ability to create, update, and delete employees. We've updated the Redux slice to handle these actions and integrated these functionalities into the React Native components. This ensures that the app maintains a consistent state and interacts with the API correctly.

@@ -14,6 +14,21 @@ export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', async
   }
 });
 
+export const createEmployee = createAsyncThunk('employees/createEmployee', async (newEmployee) => {
+  const response = await axios.post('https://dummy.restapiexample.com/api/v1/create', newEmployee);
+  return response.data.data;
+});
+
+export const updateEmployee = createAsyncThunk('employees/updateEmployee', async (updatedEmployee) => {
+  const response = await axios.put(`https://dummy.restapiexample.com/api/v1/update/${updatedEmployee.id}`, updatedEmployee);
+  return response.data.data;
+});
+
+export const deleteEmployee = createAsyncThunk('employees/deleteEmployee', async (id) => {
+  await axios.delete(`https://dummy.restapiexample.com/api/v1/delete/${id}`);
+  return id;
+});
+
 const employeeSlice = createSlice({
   name: 'employees',
   initialState: {
@@ -32,6 +47,18 @@ const employeeSlice = createSlice({
       })
       .addCase(fetchEmployees.rejected, (state) => {
         state.status = 'failed';
+      })
+      .addCase(createEmployee.fulfilled, (state, action) => {
+        state.list.push(action.payload);
+      })
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        const index = state.list.findIndex((employee) => employee.id === action.payload.id);
+        if (index !== -1) {
+          state.list[index] = action.payload;
+        }
+      })
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.list = state.list.filter((employee) => employee.id !== action.payload);
       });
   },
 });
